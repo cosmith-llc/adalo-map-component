@@ -13,6 +13,7 @@ yarn add react-native-maps@0.26.1
 cd ios
 
 if grep -q react-native-google-maps Podfile; then
+  echo "post_install already exists in Podfile"
   exit 0;
 fi
 
