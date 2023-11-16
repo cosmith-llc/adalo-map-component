@@ -32,7 +32,7 @@
       "enabled": { "markerType": "multiple" }
     },
     {
-      "name":"overrideDefaultZoom",
+      "name": "overrideDefaultZoom",
       "displayName": "Override default position and zoom",
       "type": "boolean",
       "default": false
@@ -40,20 +40,21 @@
     {
       "name": "mapZoom",
       "displayName": "Zoom",
-      "type":"number",
+      "type": "number",
       "default": 15,
       "control": {
-          "type": "slider",
-          "min": 1,
-          "max": 21 
+        "type": "slider",
+        "min": 1,
+        "max": 21
       },
       "enabled": { "overrideDefaultZoom": true }
     },
     {
-      "name": "initialLocation", 
+      "name": "initialLocation",
       "displayName": "initial location",
       "type": "text",
-      "enabled": { "overrideDefaultZoom": true }
+      "enabled": { "overrideDefaultZoom": true },
+      "helpText": "Enter exact coordinates **lat, long** or provide the **full address**"
     }
   ],
   "childComponents": [
