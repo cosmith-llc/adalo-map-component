@@ -31,14 +31,14 @@ const getPosition = async (position, apiKey) => {
     }
   }
 
-  const [lat, lng] = position.split(',')
+  const [lat, lng] = position.split(',');
   // console.log(lat, lng);
   return {
     isEmpty: false,
     lat: parseFloat(lat.trim(), 10),
     lng: parseFloat(lng.trim(), 10),
   }
-}
+};
 
 const stylesStatus = StyleSheet.create({
   wrapper: {
@@ -222,7 +222,7 @@ export default class Map extends Component {
     const position = await getPosition(initialLocation, apiKey)
     this.setState({ initialPosition: position })
   }
-  
+
   async loadDataAddresses() {
     const {
       apiKey,
