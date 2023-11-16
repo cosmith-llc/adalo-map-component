@@ -1,13 +1,5 @@
 import React, { Component } from 'react'
-import {
-  ActivityIndicator,
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-  NativeModules,
-  Alert,
-} from 'react-native'
+import { ActivityIndicator, View, Text, StyleSheet, Platform, NativeModules,Alert } from 'react-native'
 import MapWrapper from './MapWrapper'
 import { markerWidth, markerHeight, geocodeURL } from './config'
 import axios from 'axios'
@@ -20,8 +12,7 @@ import userLocationImage from './assets/user.png'
 
 // Matches a comma-separated latitude/longitude coordinate pair: "47.1231231, 179.99999999"
 // https://stackoverflow.com/questions/3518504/regular-expression-for-matching-latitude-longitude-coordinates
-const COORD_REG_EX =
-  /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/
+const COORD_REG_EX = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/
 
 const getPosition = async (position, apiKey) => {
   if (!position || position === '') {
@@ -103,11 +94,7 @@ export default class Map extends Component {
   }
 
   componentDidMount() {
-    const {
-      editor,
-      apiKey,
-      style: { currentLocation },
-    } = this.props
+    const { editor, apiKey, style: { currentLocation } } = this.props
 
     if (editor) {
       return
@@ -125,9 +112,9 @@ export default class Map extends Component {
     }
 
     if (Platform.OS === 'web' && currentLocation) {
-      navigator.geolocation.getCurrentPosition((currentPosition) => {
+      navigator.geolocation.getCurrentPosition(currentPosition => {
         this.setState({
-          currentPosition,
+          currentPosition
         })
       })
     }
@@ -135,13 +122,10 @@ export default class Map extends Component {
     this.setState({ initialPosition: { isEmpty: true } })
     this.loadDataInitialLocation()
   }
+
   componentDidUpdate() {
     const { editor, apiKey } = this.props
-    const {
-      isDataAddressesLoaded,
-      isDataAddressesLoading,
-      isUserLocationLoaded,
-    } = this.state
+    const { isDataAddressesLoaded, isDataAddressesLoading, isUserLocationLoaded } = this.state
 
     if (editor || isDataAddressesLoading || !apiKey) {
       return
@@ -152,7 +136,7 @@ export default class Map extends Component {
       // "un-render" the map so that it can be re-rendered with new data
       this.setState({ isDataAddressesLoaded: false })
     }
-
+    
     // generate an array of geocoded addresses
     if (!isDataAddressesLoaded) {
       this.loadDataAddresses()
@@ -195,17 +179,11 @@ export default class Map extends Component {
    * @returns {boolean}
    */
   shouldUpdateDataAddresses() {
-    const {
-      markerType,
-      markerCollection,
-      markers: { markerAddress },
-    } = this.props
+    const { markerType, markerCollection, markers: { markerAddress } } = this.props
     const { dataAddresses } = this.state
 
     if (markerType === 'simple') {
-      return dataAddresses.length
-        ? markerAddress !== dataAddresses[0].name
-        : markerAddress
+      return dataAddresses.length ? markerAddress !== dataAddresses[0].name : markerAddress
     }
 
     return markerCollection && markerCollection.length !== dataAddresses.length
@@ -244,7 +222,7 @@ export default class Map extends Component {
     const position = await getPosition(initialLocation, apiKey)
     this.setState({ initialPosition: position })
   }
-
+  
   async loadDataAddresses() {
     const {
       apiKey,
@@ -260,7 +238,7 @@ export default class Map extends Component {
       }
     } else {
       if (markerCollection) {
-        locations = markerCollection.map((m) => m.markers_list.markerAddress)
+        locations = markerCollection.map(m => m.markers_list.markerAddress)
       }
     }
 
@@ -277,9 +255,9 @@ export default class Map extends Component {
     // prevents unnecessary state updates in didComponentUpdate
     // while addresses are being geocoded
     this.setState({
-      isDataAddressesLoading: true,
+      isDataAddressesLoading: true
     })
-
+    
     const coordinates = []
     const addresses = []
 
@@ -308,11 +286,9 @@ export default class Map extends Component {
       key: apiKey,
     })
 
-    const geocodedCoordinates = geocodedLocations.map((location) => ({
+    const geocodedCoordinates = geocodedLocations.map(location => ({
       name: location.name,
-      location: location.address
-        ? location.address.geometry.location
-        : { lat: null, lng: null },
+      location: location.address ? location.address.geometry.location : { lat: null, lng: null },
     }))
 
     // we need to preserve the original order of string addresses/coordinates
@@ -352,10 +328,7 @@ export default class Map extends Component {
 
     if (markerType === 'simple') {
       const [simpleAddress] = dataAddresses
-      const image =
-        markerImage && markerSource === 'custom'
-          ? markerImage
-          : defaultMarkerImage
+      const image = markerImage && markerSource === 'custom' ? markerImage : defaultMarkerImage
 
       result.push({
         lat: simpleAddress.location.lat,
@@ -364,6 +337,7 @@ export default class Map extends Component {
         onPress,
         key: 'single-address',
       })
+
     } else if (markerCollection) {
       result = markerCollection.map((marker, index) => ({
         lat: dataAddresses[index] ? dataAddresses[index].location.lat : null,
@@ -374,11 +348,11 @@ export default class Map extends Component {
             ? marker.markers_list.listMarkerImage
             : defaultMarkerImage,
         onPress: marker.markers_list.onPress,
-        key: marker.id,
+        key: marker.id
       }))
     }
 
-    return result.filter((marker) => marker.lat && marker.lng)
+    return result.filter(marker => marker.lat && marker.lng)
   }
 
   render() {
@@ -388,15 +362,9 @@ export default class Map extends Component {
       style: { mapStyle, customStyle, currentLocation },
       mapZoom,
       overrideDefaultZoom,
-      _height,
+      _height
     } = this.props
-    const {
-      errorMessage,
-      isDataAddressesLoaded,
-      isUserLocationLoaded,
-      userLocation,
-      initialPosition,
-    } = this.state
+    const { errorMessage, isDataAddressesLoaded, isUserLocationLoaded, userLocation, initialPosition } = this.state
 
     if (editor) {
       return (
@@ -415,7 +383,10 @@ export default class Map extends Component {
       return <ActivityIndicator />
     }
 
-    const filteredMarkers = [...this.getDataAddresses(), ...userLocation]
+    const filteredMarkers = [
+      ...this.getDataAddresses(),
+      ...userLocation,
+    ]
 
     const options = {
       fullscreenControl: false,
@@ -425,23 +396,25 @@ export default class Map extends Component {
     if (customStyle) {
       try {
         options.styles = JSON.parse(customStyle)
-      } catch (e) {}
+      }
+      catch (e) {}
     }
 
-    const viewCenter =
-      !overrideDefaultZoom || initialPosition.isEmpty
-        ? filteredMarkers.length
-          ? { lat: filteredMarkers[0].lat, lng: filteredMarkers[0].lng }
-          : defaultCenter
-        : initialPosition
-    /*
+    const viewCenter = !overrideDefaultZoom || initialPosition.isEmpty ? 
+    (filteredMarkers.length
+      ? { lat: filteredMarkers[0].lat, lng: filteredMarkers[0].lng }
+      : defaultCenter)
+    :(
+      initialPosition
+    );
+/*
     const viewCenter = 
       filteredMarkers.length 
         ? { lat: filteredMarkers[0].lat, lng: filteredMarkers[0].lng } 
         : defaultCenter
 */
     return (
-      <View style={[{ width: '100%', height: _height }, { minHeight: 64 }]}>
+      <View style={ [{ width: '100%', height: _height }, { "minHeight": 64 }]}>
         <MapWrapper
           apiKey={apiKey}
           options={options}
@@ -449,8 +422,8 @@ export default class Map extends Component {
           currentLocation={currentLocation}
           filteredMarkers={filteredMarkers}
           viewCenter={viewCenter}
-          overrideDefaultZoom={overrideDefaultZoom}
-          initZoom={mapZoom}
+          overrideDefaultZoom = {overrideDefaultZoom}
+          initZoom = {mapZoom}
         />
       </View>
     )
